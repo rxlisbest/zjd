@@ -73,7 +73,8 @@ function form_post(form, url){
 		dataType:"json",
 		cache:false, 
 	})};
-	_submit();
+	if(checkFormInput(form))
+		_submit();
 	return false;
 }
 function url_post(url){
@@ -220,5 +221,30 @@ function checkFormInput(form){
 	}
 	else{
 		return true;
+	}
+}
+function _checkFormInput(form){
+	var error = new Array();
+	var input = form.getElementsByTagName("input");	
+	for(var i=0;i<input.length;i++){
+			
+		if(/required/.test(input[i].className) && input[i].value.length==0){ 
+			var spans = input[i].parentNode.getElementsByTagName("span");
+			if(spans.length>0){
+				for(var m=0;m<spans.length;m++){
+					if(spans[m].className == "input-notification error png_bg"){
+						spans[m].parentNode.removeChild(spans[m]);
+					}
+				}	
+			}
+			var span = document.createElement("span");
+			span.className = "input-notification error png_bg";
+			span.innerHTML = "请填写此字段!";
+			insertAfter(span, input[i]);
+			error.push(i);
+		}
+	}	
+	if(error.length>0){
+		return false;
 	}
 }

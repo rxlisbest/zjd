@@ -5,7 +5,7 @@
 		$.ajaxFileUpload
 		(
 			{
-				url:'/admin.php/admin/Video/upload',
+				url:'/admin.php/admin/Flash/upload',
 				secureuri:false,
 				fileElementId:'image',
 				dataType: 'json',
@@ -23,7 +23,7 @@
 							$("#buttonUpload").hide();
 							$("#buttonSelect").hide();
 							$("#image_upload").hide();
-							$("#v_img").attr("value",data.msg);
+							$("#f_img").attr("value",data.msg);
 						}
 					}
 				},
@@ -57,8 +57,8 @@
 					<h3>案例管理</h3>
 					
 					<ul class="content-box-tabs">
-						<li><a href="#tab1" class="<?php if(!isset($video)){echo 'current';}?>">列表</a></li> <!-- href must be unique and match the id of target div -->
-						<li><a href="#tab2" class="<?php if(isset($video)){echo 'current';}?>">添加/修改</a></li>
+						<li><a href="#tab1" class="<?php if(!isset($flash)){echo 'current';}?>">列表</a></li> <!-- href must be unique and match the id of target div -->
+						<li><a href="#tab2" class="<?php if(isset($flash)){echo 'current';}?>">添加/修改</a></li>
 					</ul>
 					
 					<div class="clear"></div>
@@ -67,7 +67,7 @@
 				
 				<div class="content-box-content">
 					
-					<div class="tab-content<?php if(!isset($video)){echo ' default-tab';}?>" id="tab1"> <!-- This is the target div. id must match the href of this div's tab -->
+					<div class="tab-content<?php if(!isset($flash)){echo ' default-tab';}?>" id="tab1"> <!-- This is the target div. id must match the href of this div's tab -->
 						
 						<!--div class="notification attention png_bg">
 							<a href="#" class="close"><img src="/Public/resources/images/icons/cross_grey_small.png" title="Close this notification" alt="close" /></a>
@@ -75,7 +75,7 @@
 								This is a Content Box. You can put whatever you want in it. By the way, you can close this notification with the top-right cross.
 							</div>
 						</div-->
-					<form method="post" action="<?php echo $video_batchUrl;?>" onsubmit="return form_post(this,'www.baidu.com')" >	
+					<form method="post" action="<?php echo $flash_batchUrl;?>" onsubmit="return form_post(this,'www.baidu.com')" >	
 						<table>
 							
 							<thead>
@@ -107,18 +107,18 @@
 						 
 							<tbody>
 								<?php 
-									$n = 15 - count($video_list );
-									foreach($video_list as $value){  
+									$n = 15 - count($flash_list );
+									foreach($flash_list as $value){  
 								?>
 								<tr>
-									<td><input type="checkbox" name="<?php echo $value["v_id"];?>" /></td>
-									<td><?php echo $value["v_title"];?></td>
-									<td><?php echo $value["v_time"];?></td>
-									<td><?php echo $value["v_sort"];?></td>
+									<td><input type="checkbox" name="<?php echo $value["f_id"];?>" /></td>
+									<td><?php echo $value["f_title"];?></td>
+									<td><?php echo $value["f_time"];?></td>
+									<td><?php echo $value["f_sort"];?></td>
 									<td>
 										<!-- Icons -->
-										 <a href="#" title="Edit" onclick="show_frame('<?php echo $videolistUrl;?>/v_id/<?php echo $value["v_id"];?>')"><img src="/Public/resources/images/icons/pencil.png" alt="Edit" /></a>
-										 <a href="#" title="Delete" onclick="url_post('<?php echo $video_deleteUrl;?>/v_id/<?php echo $value["v_id"];?>')"><img src="/Public/resources/images/icons/cross.png" alt="Delete" /></a> 
+										 <a href="#" title="Edit" onclick="show_frame('<?php echo $flashlistUrl;?>/f_id/<?php echo $value["f_id"];?>')"><img src="/Public/resources/images/icons/pencil.png" alt="Edit" /></a>
+										 <a href="#" title="Delete" onclick="url_post('<?php echo $flash_deleteUrl;?>/f_id/<?php echo $value["f_id"];?>')"><img src="/Public/resources/images/icons/cross.png" alt="Delete" /></a> 
 										 <!--a href="#" title="Edit Meta"><img src="/Public/resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a-->
 									</td>
 								</tr>
@@ -146,21 +146,21 @@
 						
 					</div> <!-- End #tab1 -->
 					
-					<div class="tab-content<?php if(isset($video)){echo ' default-tab';}?>" id="tab2">
+					<div class="tab-content<?php if(isset($flash)){echo ' default-tab';}?>" id="tab2">
 					
-						<form action="<?php echo $video_saveUrl;?>" method="post" onsubmit="return form_post(this,'www.baidu.com')" enctype="multipart/form-data">
+						<form action="<?php echo $flash_saveUrl;?>" method="post" onsubmit="return form_post(this,'www.baidu.com')" enctype="multipart/form-data">
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
-								<input name="v_id" style="display:none;" value="<?php echo $video["v_id"];?>" />
+								<input name="f_id" style="display:none;" value="<?php echo $flash["f_id"];?>" />
 								<p>
-									<label>视频名称:</label>
-										<input class="text-input small-input required" type="text" name="v_title" value="<?php echo $video["v_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+									<label>FLASH名称:</label>
+										<input class="text-input small-input required" type="text" name="f_title" value="<?php echo $flash["f_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small></small-->
 								</p>
 
 								<p>
-									<label>案例图片:</label>
-								<?php if(isset($video)){ ?>
-									<img id="imgDiv" style="width:255px;height:165px;" src="<?php echo $video['v_img'];?>" />
+									<label>FLASH图片:</label>
+								<?php if(isset($flash)){ ?>
+									<img id="imgDiv" style="width:255px;height:165px;" src="<?php echo $flash['f_img'];?>" />
 								<?php }else{ ?>
         								<div id="imgDiv">
         								</div> <br />
@@ -168,22 +168,16 @@
 								</p>
 
 								<p id="image_upload">
-						<input type="text" name="v_img" style="display:none;" id="v_img" value="<?php echo $video["v_img"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+						<input type="text" name="f_img" style="display:none;" id="f_img" value="<?php echo $flash["f_img"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 
-						<input type="text" name="v_img_old" style="display:none;" id="v_img" value="<?php echo $video["v_img"];?>" />						
+						<input type="text" name="f_img_old" style="display:none;" id="f_img" value="<?php echo $flash["f_img"];?>" />						
 						<a class="button" id="buttonSelect" onclick="image.click()">选择图片</a>
 						<a class="button" id="buttonUpload" onclick="return ajaxFileUpload();" style="display:none;">上传图片</a>						<br /><!--small></small-->
 								</p>
 
 								<p>
-									<label>视频链接:</label>
-										<input class="text-input small-input required" type="text" name="v_src" value="<?php echo $video["v_src"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
-										<br /><!--small></small-->
-								</p>
-
-								<p>
-									<label>视频排序:</label>
-										<input class="text-input small-input required" type="text" name="v_sort" value="<?php echo $video["v_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+									<label>FLASH排序:</label>
+										<input class="text-input small-input required" type="text" name="f_sort" value="<?php echo $flash["f_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small>右侧导航显示顺序</small-->
 								</p>
 								

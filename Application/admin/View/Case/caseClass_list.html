@@ -99,19 +99,19 @@
 					
 					<div class="tab-content<?php if(isset($caseclass)){echo ' default-tab';}?>" id="tab2">
 					
-						<form action="<?php echo $caseclass_saveUrl;?>" method="post" onsubmit="return form_post(this,'www.baidu.com')">
+						<form action="<?php echo $caseclass_saveUrl;?>" method="post" onsubmit="return form_post(this)">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								<input name="c_id" style="display:none;" value="<?php echo $caseclass["c_id"];?>" />
 								<p>
 									<label>分类名称:</label>
-										<input class="text-input small-input" type="text" name="c_title" value="<?php echo $caseclass["c_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+										<input class="text-input small-input required" type="text" name="c_title" value="<?php echo $caseclass["c_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small></small-->
 								</p>
 
 								<p>
 									<label>分类排序:</label>
-										<input class="text-input small-input" type="text" name="c_sort" value="<?php echo $caseclass["c_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+										<input class="text-input small-input required" type="text" name="c_sort" value="<?php echo $caseclass["c_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small>右侧导航显示顺序</small-->
 								</p>
 								

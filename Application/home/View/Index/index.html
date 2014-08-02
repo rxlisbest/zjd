@@ -12,16 +12,16 @@
             <div id="flashBg">
 
                 <div id="flash">
-                    <a style="display:block;" id="flash1" target="_blank" href="###">
-                        <img src="/Public/home/images/Slides-1.png" height="560" width="995"></a>
-                    <a style="display: none;" id="flash2" target="_blank" href="#">
-                        <img src="/Public/home/images/Slides-2.png" height="560" width="995"></a>
-                    <a style=" display:none;" id="flash3" target="_blank" href="#">
-                        <img src="/Public/home/images/Slides-3.png" height="560" width="995"></a>
+		<?php $m=1;?>
+		<foreach name="flash" item="val">
+                    <a style="display:block;" id="flash{$m}" target="_blank" href="###">
+                        <img src="{$val.f_img}" height="560" width="995"></a>
+		<?php $m+=1;?>
+		</foreach>
                     <div class="flash_bar">
-                        <div class="dq" id="f1" onclick="changeflash(1)"></div>
-                        <div class="no" id="f2" onclick="changeflash(2)"></div>
-                        <div class="no" id="f3" onclick="changeflash(3)"></div>
+		<?php for($i=1;$i<=count($flash);$i++){ ?>
+                        <div class="<?php if($i==1){echo 'dq';}else{echo 'no';}?>" id="f{$i}" onclick="changeflash({$i})"></div>
+		<?php } ?>
                     </div>
                 </div>
             </div>
