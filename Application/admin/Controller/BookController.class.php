@@ -67,6 +67,10 @@ class BookController extends YuController {
 					$error[$key] = "图片类型不正确!";
 					continue;
 				}
+				if($_FILES["picFile"]["size"][$key] > 100000){
+					$error[$key] = "图片太大!";
+					continue;
+				}
 				$time = date("YmdHis");	
 				$types = array("image/gif"=>".gif","image/pjpeg"=>".pjpeg","image/jpeg"=>".jpeg","image/png"=>".png"); 
 				$image_type = $types[$_FILES["picFile"]["type"][$key]];
