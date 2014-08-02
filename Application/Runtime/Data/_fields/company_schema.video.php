@@ -1,0 +1,1 @@
+a:8:{i:0;s:4:"v_id";i:1;s:7:"v_title";i:2;s:5:"v_src";i:3;s:5:"v_img";i:4;s:6:"v_sort";i:5;s:6:"v_time";s:3:"_pk";s:4:"v_id";s:5:"_type";a:6:{s:4:"v_id";s:7:"int(11)";s:7:"v_title";s:12:"varchar(100)";s:5:"v_src";s:12:"varchar(255)";s:5:"v_img";s:12:"varchar(255)";s:6:"v_sort";s:7:"int(11)";s:6:"v_time";s:8:"datetime";}}

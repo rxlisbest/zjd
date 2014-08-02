@@ -17,9 +17,9 @@ class CaseController extends YuController {
 
 	public function caseClass($page=1){
 		$caseclass_model = D("Caseclass");
-		$url = "/index.php/admin/Case/caseClass";
+		$url = "/admin.php/admin/Case/caseClass";
 
-		$rowNum = $caseclass_model->count();
+		$rowNum = $caseclass_model->where("c_id <> 1")->count();
 		$pageSize = 12;
 		$pages = ceil($rowNum/$pageSize);
 		if($page > $pages)
@@ -28,7 +28,7 @@ class CaseController extends YuController {
 			$page = 1;
 		$curPage = $page ?: 1;
 		$offset = ($curPage-1)*$pageSize;
-		$caseclass_list = $caseclass_model->order("c_sort")->limit($offset, $pageSize)->select();
+		$caseclass_list = $caseclass_model->where("c_id <> 1")->order("c_sort")->limit($offset, $pageSize)->select();
 		$pagination = $this->getPagination($curPage, $pages, $url);
 		$this->assign('page',$page);
 		$this->assign('caseclass_list',$caseclass_list );
@@ -154,14 +154,14 @@ class CaseController extends YuController {
 
 	public function caselist($page=1, $cs_id=0){
 		$caseclass_model = D("Caseclass");
-		$caseclasses = $caseclass_model->order("c_sort")->select();
+		$caseclasses = $caseclass_model->where("c_id <> 1")->order("c_sort")->select();
 		foreach($caseclasses as $value){
 			$caseclass[$value["c_id"]] = $value["c_title"];
 		}
 		$case_model = D("Case");
 		$url = U('Case/caselist',array('page'=>$page),'');
 
-		$rowNum = $case_model->count();
+		$rowNum = $case_model->where("c_id <> 1")->count();
 		$pageSize = 15;
 		$pages = ceil($rowNum/$pageSize);
 		if($page > $pages)
@@ -170,14 +170,21 @@ class CaseController extends YuController {
 			$page = 1;
 		$curPage = $page ?: 1;
 		$offset = ($curPage-1)*$pageSize;
-		$case_list = $case_model->order("cs_sort")->limit($offset, $pageSize)->select();
+		$case_list = $case_model->where("c_id <> 1")->order("cs_sort")->limit($offset, $pageSize)->select();
 		$pagination = $this->getPagination($curPage, $pages, $url);
 		$this->assign('page',$page);
 		$this->assign('caseclass',$caseclass);
 		if($cs_id){
 			$case = $case_model->where("cs_id = ".$cs_id)->find();
 			$this->assign('case',$case);
+			$image_model = D("Image");
+			$img_id = $case["cs_image"];
+			$images = $image_model->where("img_id in (".$img_id.")")->select();
 		}
+		else{
+			$images = array(0=>array());
+		}
+		$this->assign('case_images',$images);
 		$this->assign('case_list',$case_list);
 		$this->assign('pagination',$pagination);
 
@@ -191,25 +198,69 @@ class CaseController extends YuController {
 	}
 
 	public function case_save($page=1){
+		$image_model = D("Image");
 		$post = $_POST;
-		$old_img = $post["cs_image_old"];
-		unset($post["cs_image_old"]);
-		if($post["cs_image"]==""){
-			$type = "error";
-			$infomation = "图片没上传，添加失败!";
-			$json["info"] = $this->getInfomation($type, $infomation);
-			echo json_encode($json);
-			return ;
-		} 
-		if($post){
+		$path = "./Public/uploads/images/case/";
+		$img_types = array("image/gif","image/pjpeg","image/jpeg","image/png");
+		if(!file_exists($path)){
+			mkdir($path);
+			chmod($path,0777);
+		}	
+		$error = array();
+		$success = array();
+		foreach($_POST["picDescribe"] as $key=>$value){
+			if($post["img_id"][$key]){
+				$img_edit["img_des"] = $post["picDescribe"][$key];
+				$id=$image_model->where("img_id = ".$post["img_id"][$key])->save($img_edit);
+			}
+			if($_FILES["picFile"]["tmp_name"][$key] AND $post["img_id"][$key]==""){
+				if(!in_array($_FILES["picFile"]["type"][$key],$img_types)){
+					$error[$key] = "图片类型不正确!";
+					continue;
+				}
+				$time = date("YmdHis");	
+				$types = array("image/gif"=>".gif","image/pjpeg"=>".pjpeg","image/jpeg"=>".jpeg","image/png"=>".png"); 
+				$image_type = $types[$_FILES["picFile"]["type"][$key]];
+				$image_name = $path.$time."-".$key.$image_type;
+				move_uploaded_file($_FILES["picFile"]["tmp_name"][$key],$image_name);
+				$image_url = str_replace("./","/",$image_name);
+				$image_info["img_src"] = $image_url;
+				$image_info["img_des"] = $value;
+				$img_id = $image_model->data($image_info)->add();
+				if($img_id){
+					$success[$key] = $img_id;
+					$post["img_id"][] = $img_id;
+				}
+				else{
+					$error[$key] = "图片保存失败!";
+				}
+			}
+			if(!$_FILES["picFile"]["tmp_name"][$key] AND $post["img_id"][$key]==""){
+				$error[$key] = "图片不能为空!";
+				continue;
+				
+			}
+			if($key==$post["cover_img"]){
+				$post["cs_cover"] = $post["img_id"][$key] ?: $img_id;
+				unset($post["cover_img"]);
+			}
+		}
+		$data = array("success"=>$success,"error"=>$error);
+		$data = json_encode($data);
+		echo "<script>window.parent.show_upload_result(".$data.");</script>";
+		if(empty($error)){
+			$case_model = D("Case");
+			unset($post["picDescribe"]);
+			$post["img_id"] = array_filter($post["img_id"]);
+			$post["cs_image"] = implode(",", $post["img_id"]);
+			unset($post["img_id"]);
+			$post["cs_time"] = date("Y-m-d H:m:s");
+
 			$cs_id = $post["cs_id"];
 			unset($post["submit"]);
 			unset($post["cs_id"]);
-			$post["cs_time"] = date("Y-m-d H:m:s");
-			$case_model = D("Case");
 			if($cs_id){
 				if($id=$case_model->where("cs_id = ".$cs_id)->save($post)){
-					unlink(".".$old_img);
 					$type = "success";
 					$infomation = "修改成功!";
 				}
@@ -228,12 +279,12 @@ class CaseController extends YuController {
 					$infomation = "添加失败!";
 				}
 			}
-			
 			$json["info"] = $this->getInfomation($type, $infomation);
 			$json["url"] = U('Case/caselist',array('page'=>$page),'');
 			$json["path"] = "101011";
-			echo json_encode($json);
+			echo "<script>window.parent.form_bridge(".json_encode($json).");</script>";
 		}
+		return ;
 	}
 
 	public function case_delete($page=1, $cs_id = 0){
@@ -300,4 +351,5 @@ class CaseController extends YuController {
 		$image_url = str_replace("./","/",$image_name);
 		echo '{error:"",msg:"'.$image_url.'"}';
 	}
+	
 }

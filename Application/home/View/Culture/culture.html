@@ -1,0 +1,42 @@
+<extend name="./Public/home/home.html" />
+<block name="title">
+	<title>文化交流-杭州周姜达文化创意有限公司</title>
+</block>
+<block name="main">
+        <div class="c_culture">
+            <div class="c_culture_container">
+                <div class="container_header">
+                    <a>
+                        文化交流
+                    </a>
+                    <hr>
+                </div>
+                <div class="c_culture_cont">
+                    <ul>	
+		<foreach name="page" item="v" >
+                        <li>
+                            <img src="/Public/home/images/img_sub_menu_icon.gif"><a href="/culture/detail/{$v.p_id}">{$v.p_title}</a>
+                        </li>
+		</foreach>
+                    </ul>
+                </div>
+            </div>
+         </div>
+<!--    <footer>
+        <div class="footer_txt">
+            Copyright © 2014 杭州周姜达文化创意有限公司. 版权所有
+        </div>
+    </footer>-->
+    <script type="text/javascript" src="/Public/home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/Public/home/js/jquery.nicescroll.js"></script>
+    <script type="text/javascript">
+        $(".c_culture_cont").niceScroll({
+            cursorcolor:"#00fcff",
+            cursoropacitymax:1,
+            touchbehavior:false,
+            cursorwidth:"5px",
+            cursorborder:"0",
+            cursorborderradius:"5px"
+        });
+    </script>
+</block>

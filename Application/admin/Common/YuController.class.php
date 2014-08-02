@@ -48,7 +48,7 @@ class YuController extends Controller
         $nav .= "导航管理";
         $nav .= "</a>";
         $nav .= "<ul id=\"nav_ul_last\">";
-        $nav .= "<li><a id=\"s_nav_last_1\" onclick=\"show_frame('/index.php/admin/Admin/add_nav')\">导航管理</a></li>";
+        $nav .= "<li><a id=\"s_nav_last_1\" onclick=\"show_frame('/admin.php/admin/Admin/add_nav')\">导航管理</a></li>";
         $nav .= "</ul>";
         $nav .= "</li>";
         return $nav;

@@ -1,84 +1,30 @@
-        <extend name="./Public/home/home.html" />
-	<block name="title"><title><?php echo $title;?></title></block>
-<block name="nav">
-        <li><a href="{$IndexUrl}">首页</a></li>
-        <li><a href="{$CaseUrl}">网站案例</a></li>
-        <li><a href="{$PageUrl}">新闻动态</a></li>
-        <li class="{$ContactUrl}"><a href="">联系我们</a></li>
-        <li><a href="{$BlogUrl}">博客</a></li>
+<extend name="./Public/home/home.html" />
+<block name="title">
+	<title>联系我们-杭州周姜达文化创意有限公司</title>
 </block>
-<block name="banner">
-        <section id="banner-section">
-            <div class="row">
-                <div class="twelve columns">
-                    <h2 class="white">
-			{$title}
-		    </h2>		
-                    <p class="blue biggest text-center"></p>
-                </div>
-            </div>
-        </section>
-</block>
-<block name="content">
-        <section class="white-bg centered js-sect2 fade-up" id="team-section">
-            <div class="row">
-                <div class="twelve columns section-title">
-                    <img alt="" src="/Public/home/images/icon-l-astronautdiv.png" class="centered">
-                    <h3>联系我们</h3>
-                    <hr class="sep">
-                    <p class="grey-blue">我们的专业团队</p>
-                </div>
-            </div>
-
-            <div class="row">
-	<foreach name="Contacts" item="value" >
-                <div class="four columns">
-                    <a class="trigger invert" href="#team-{$value.con_id}">
-                        <img alt="Photo of Amy" src="{$value.con_pic}" class="img-2" />
-                        <h2>{$value.con_name}&nbsp;&nbsp;{$value.con_ename}</h2>
-                        <p class="grey-blue">{$value.con_position}</p>
+<block name="main">
+        <div class="c_contact">
+            <div class="c_contact_container">
+                <div class="container_header">
+                    <a>
+                        联系我们
                     </a>
+                    <hr>
                 </div>
-	</foreach>
-            </div>
-
-            <!-- Team Bios -->
-            <div id="team-bios-section">
-	<foreach name="Contacts" item="value" >
-                <div style="display: none;" class="team_bio grey-blue-bg" id="team-{$value.con_id}">
-                    <div class="row">
-                        <div class="ten columns centered">
-                            <h3>{$value.con_name}&nbsp;&nbsp;{$value.con_ename}</h3>
-                            <h4>{$value.con_position}&nbsp; Programmer</h4>
-                            <p>
-                                联系电话：{$value.con_phone}<br>
-                                座右铭：{$value.con_oneword}<br>
-                                自我介绍：{$value.con_myself}<br>
-                            </p>
-                            <ul class="link-list centered">
-                                <li>
-                                    <a href="#">
-                                        <div class="icon-weibo">
-                                        </div> @yourweibo
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                <div class="c_contact_cont">
+                    <div class="map_img">
+                        <img src="/Public/home/images/map.gif">
+                    </div>
+                    <div class="cont_info">
+                        <ul>
+                            <li><p><span>地址：</span>{$contact.con_address}</p></li>
+                            <li><p><span>电话：</span>{$contact.con_phone}</p></li>
+                            <li><p><span>邮箱：</span>{$contact.con_email}</p></li>
+                            <li><p><span>QQ：</span>{$contact.con_qq}</p></li>
+                            <li><p><span>联系人：</span>{$contact.con_name}</p></li>
+                        </ul>
                     </div>
                 </div>
-	</foreach>
             </div>
-        </section>
-</block>
-<block name="contact_email">{$Contact["con_email"]}</block>
-<block name="contact_phone">{$Contact["con_phone"]}</block>
-<block name="contact_us">     
-	<a class="" href="{$ContactUrl}">
-       		<span class="blue">联系我们</span>
-        </a>
-</block>
-<block name="friend">
-	<foreach name="Friends" item="friend">
-		<li><a href="{$friend.f_url}">{$friend.f_name}</a></li>
-	</foreach>
+        </div>
 </block>

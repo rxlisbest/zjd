@@ -35,7 +35,7 @@
 			<div id="profile-links">
 				Hello, <a href="#" title="Edit your profile">{$User}</a>, you have <a href="#messages" rel="modal" title="3 Messages">3 Messages</a><br />
 				<br />
-				<a href="{$IndexUrl}" title="View the Site">View the Site</a> | <a href="{$LogoutUrl}" title="Sign Out">Sign Out</a>
+				<a href="/" title="View the Site">View the Site</a> | <a href="{$LogoutUrl}" title="Sign Out">Sign Out</a>
 			</div>        
 				
 			<ul id="main-nav">  <!-- Accordion Menu -->
@@ -61,14 +61,14 @@
 				</li>
 				<?php } ?>
 			<?php } ?>	
-				<li>
+				<!--li>
 					<a id="p_nav_last" class="nav-top-item">
 						导航管理	
 					</a>
 					<ul id="nav_ul_last">
-						<li><a id="s_nav_last_1" onclick="show_frame('/index.php/admin/Admin/add_nav')">导航管理</a></li>
+						<li><a id="s_nav_last_1" onclick="show_frame('/admin.php/admin/Admin/add_nav')">导航管理</a></li>
 					</ul>
-				</li>
+				</li-->
 			</ul> <!-- End #main-nav -->
 			
 			<div id="messages" style="display: none"> <!-- Messages are shown when a link with these attributes are clicked: href="#messages" rel="modal"  -->

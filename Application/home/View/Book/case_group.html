@@ -1,0 +1,141 @@
+<extend name="./Public/home/home.html" />
+<block name="title">
+	<title>案例分类展示-杭州周姜达文化创意有限公司</title>
+</block>
+<block name="main">
+    <script type="text/javascript">
+        window.onload = function () {
+            var oBtnLeft = document.getElementById("goleft");
+            var oBtnRight = document.getElementById("goright");
+            var oDiv = document.getElementById("indexmaindiv");
+            var oDiv1 = document.getElementById("maindiv1");
+            var oUl = oDiv.getElementsByTagName("ul")[0];
+            var aLi = oUl.getElementsByTagName("li");
+            var now = -5 * (aLi[0].offsetWidth + 13);
+            oUl.style.width = aLi.length * (aLi[0].offsetWidth + 13) + 'px';
+            oBtnRight.onclick = function () {
+                var n = Math.floor((aLi.length * (aLi[0].offsetWidth + 13) + oUl.offsetLeft) / aLi[0].offsetWidth);
+
+                if (n <= 5) {
+                    move(oUl, 'left', 0);
+                }
+                else {
+                    move(oUl, 'left', oUl.offsetLeft + now);
+                }
+            }
+            oBtnLeft.onclick = function () {
+                var now1 = -Math.floor((aLi.length / 5)) * 5 * (aLi[0].offsetWidth + 13);
+
+                if (oUl.offsetLeft >= 0) {
+                    move(oUl, 'left', now1);
+                }
+                else {
+                    move(oUl, 'left', oUl.offsetLeft - now);
+                }
+            }
+            var timer = setInterval(oBtnRight.onclick, 5000);
+            oDiv.onmouseover = function () {
+                clearInterval(timer);
+            }
+            oDiv.onmouseout = function () {
+                timer = setInterval(oBtnRight.onclick, 5000);
+            }
+
+        };
+
+        function getStyle(obj, name) {
+            if (obj.currentStyle) {
+                return obj.currentStyle[name];
+            }
+            else {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+
+        function move(obj, attr, iTarget) {
+            clearInterval(obj.timer)
+            obj.timer = setInterval(function () {
+                var cur = 0;
+                if (attr == 'opacity') {
+                    cur = Math.round(parseFloat(getStyle(obj, attr)) * 100);
+                }
+                else {
+                    cur = parseInt(getStyle(obj, attr));
+                }
+                var speed = (iTarget - cur) / 6;
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                if (iTarget == cur) {
+                    clearInterval(obj.timer);
+                }
+                else if (attr == 'opacity') {
+                    obj.style.filter = 'alpha(opacity:' + (cur + speed) + ')';
+                    obj.style.opacity = (cur + speed) / 100;
+                }
+                else {
+                    obj.style[attr] = cur + speed + 'px';
+                }
+            }, 30);
+        }
+	
+	$(document).ready(function(){
+		$("div[id^='indexmaindiv']").hide();
+		$("#indexmaindiv{$id}").show();
+		$("li[id^='navli']").children().removeClass("selected");
+		$("#navli{$id}").children().addClass("selected");
+		$("li[id^='navli']").click(function(){
+			var divID = this.id.substr(5);
+			$("li[id^='navli']").children().removeClass("selected");
+			$(this).children().addClass("selected");
+			$("div[id^='indexmaindiv']").hide();
+			$("#indexmaindiv"+divID).show();
+		});
+	});
+    </script>
+        <div class="c_works">
+            <div class="c_work_container">
+                <div class="work_container_header">
+                    <ul>
+                        <li id="navli0">
+                            <a class="selected">
+                                &nbsp;&nbsp;书刊编辑&nbsp;&nbsp;
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+
+                </div>
+                <div class="indexmaindiv" id="indexmaindiv0">
+                    <div class="indexmaindiv1 clearfix" >
+                        <div class="stylesgoleft" id="goleft"></div>
+                        <div class="maindiv1 book_vs_one" id="maindiv1">
+                            <ul id="count1">
+			<foreach name="case" item="val">
+                                <li class="">
+                                    <div class="playerdetail">
+                                        <div class="detailimg2">
+				<foreach name="val" item="v">
+                                            <div class="book_filter">
+                                                <a href="/book/detail/{$v.cs_id}">
+                                                    <img src="{$v.img_src}" />
+                                                </a>
+                                                <div class="bfilter"></div>
+                                                <div class="bfont_lay">
+                                                    <a class="tit" href="/book/detail/{$v.cs_id}">
+							{$v.cs_title}
+                                                    </a>
+                                                </div>
+                                            </div>
+				</foreach>
+                                        </div>
+                                    </div>
+                                </li>
+			</foreach>
+                            </ul>
+                        </div>
+                        <div class="stylesgoright" id="goright"></div>
+                    </div>
+                </div>
+
+            </div>
+<script type="text/javascript" src="/Public/home/js/myIndex.js"></script>
+</block>

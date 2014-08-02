@@ -1,49 +1,114 @@
+<script language="javascript" type="text/ecmascript">
+//======================
+//功能:在表单中input file控件
+//参数:parentID---要插入input file控件的父元素ID
+//    inputID----input file控件的ID
+//======================
+function createInput(parentID,inputFileID){  
+	var parent=document.getElementById(parentID);//获取父元素
 
-	<script type="text/javascript">
-	function ajaxFileUpload()
-	{
-		$.ajaxFileUpload
-		(
-			{
-				url:'/index.php/admin/Case/upload',
-				secureuri:false,
-				fileElementId:'image',
-				dataType: 'json',
-				data:{name:'logan', id:'id'},
-				success: function (data, status)
-				{
-					if(typeof(data.error) != 'undefined')
-					{
-						if(data.error != '')
-						{
-							alert(data.error);
-						}else
-						{
-							alert(data.msg);
-							$("#buttonUpload").hide();
-							$("#buttonSelect").hide();
-							$("#image_upload").hide();
-							$("#cs_image").attr("value",data.msg);
-						}
-					}
-				},
-				error: function (data, status, e)
-				{
-					alert(e);
-				}
+	var tr=document.createElement("tr");//创建一个div容器用于包含input file
+	var x = 0;
+	var trs = document.getElementById("uploadImg").getElementsByTagName("tr");
+	for(var i=0;i<trs.length;i++){
+		if(trs[i].id.substr(0, 7)=='PicFile'){
+			var max = parseInt(trs[i].id.substr(7));
+			if(x < max){
+				x = max;
 			}
-		)
-		
-		return false;
+		}
+	}	
+	
+	x += 1;
 
+	var trName=inputFileID+x.toString();//随机div容器的名称
+	tr.name=trName;
+	tr.id=trName;
+
+	var td0=document.createElement("td");
+	var td1=document.createElement("td");
+	var td2=document.createElement("td");
+	var td3=document.createElement("td");
+	var td4=document.createElement("td");
+	var td5=document.createElement("td");
+	tr.appendChild(td0);
+	tr.appendChild(td1);
+	tr.appendChild(td2);
+	tr.appendChild(td3);
+	tr.appendChild(td4);
+	tr.appendChild(td5);
+
+	var coverImg=document.createElement("input"); //创建input
+	coverImg.name="cover_img";
+	coverImg.value=x;
+	coverImg.type="radio";
+
+	var img_id=document.createElement("input"); //创建input
+	img_id.id="img_id"+x.toString();
+	img_id.name="img_id["+x.toString()+"]";
+	img_id.style="display:none;";
+
+	var pImg = document.createElement("img");
+	pImg.id="img"+x.toString();
+	pImg.width=100;
+	
+	var pDescribe=document.createElement("input"); //创建input
+	pDescribe.name="picDescribe["+x.toString()+"]";
+	pDescribe.type="text";
+
+	var aElement=document.createElement("input"); //创建input
+	aElement.name="picFile["+x.toString()+"]";
+	aElement.id=inputFileID;
+	aElement.onchange=function(){ PreviewImage(this,'img'+x.toString(),'divNewPreview')};
+	aElement.type="file";//设置类型为file
+
+	var delBtn=document.createElement("input");//再创建一个用于删除input file的Button
+	delBtn.type="button";
+	delBtn.value="删除";
+	delBtn.onclick=function(){ removeInput(parentID,trName)};//为button设置onclick方法
+
+	var errorDiv=document.createElement("div");//创建一个div容器用于包含input file
+	errorDiv.id = "errorDiv"+x.toString();
+
+	tr.appendChild(img_id);//将input file加入div容器
+	td0.appendChild(coverImg);//将input file加入div容器
+	td1.appendChild(pImg);//将input file加入div容器
+	td2.appendChild(aElement);//将input file加入div容器
+	td3.appendChild(pDescribe);//将input file加入div容器
+	td4.appendChild(delBtn);//将删除按钮加入div容器
+	td5.appendChild(errorDiv);//将删除按钮加入div容器
+	parent.appendChild(tr);//将div容器加入父元素
+}
+//============================
+//功能:删除一个包含input file的div 容器
+//参数:parentID---input file控件的父元素ID
+//    DelDivID----个包含input file的div 容器ID
+//============================
+function removeInput(parentID,DelDivID){
+	var parent=document.getElementById(parentID);
+	parent.removeChild(document.getElementById(DelDivID));
+}
+
+function show_upload_result(data){
+	for(var key in data["success"]){
+		var id = document.getElementById("img_id"+key);
+		id.value = data["success"][key];
 	}
-	</script>	
-<script type="text/javascript">
-        $(document).ready(function() {
-            //建议在#imgDiv的父元素上加个overflow:hidden;的css样式
-            $("#image").uploadPreview({ width: 255, height: 165, imgDiv: "#imgDiv", imgType: ["bmp", "gif", "png", "jpg"] });
-        });
-    </script> 
+	for(var key in data["error"]){
+		var errorDiv = document.getElementById("errorDiv"+key);
+		errorDiv.innerHTML = '<span class="input-notification error png_bg">'+data["error"][key]+'</span>';
+	}
+}
+
+function clearId(img_id){
+	var imgID = document.getElementById(img_id);
+	imgID.value = "";
+}
+
+function changeImg(){
+
+}
+</script>
 			<!-- Page Head -->
 			<h2>案例管理</h2>
 			<p id="page-intro">添加、删除和修改案例。</p>
@@ -154,12 +219,12 @@
 					
 					<div class="tab-content<?php if(isset($case)){echo ' default-tab';}?>" id="tab2">
 					
-						<form action="<?php echo $case_saveUrl;?>" method="post" onsubmit="return form_post(this,'www.baidu.com')" enctype="multipart/form-data">
+						<form action="<?php echo $case_saveUrl;?>" onsubmit="return checkFormInput(this)" method="post" target="frameFile" enctype="multipart/form-data">
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								<input name="cs_id" style="display:none;" value="<?php echo $case["cs_id"];?>" />
 								<p>
 									<label>案例名称:</label>
-										<input class="text-input small-input" type="text" name="cs_title" value="<?php echo $case["cs_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+										<input class="text-input small-input required" type="text" name="cs_title" value="<?php echo $case["cs_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small></small-->
 								</p>
 
@@ -174,31 +239,49 @@
 
 								<p>
 									<label>案例图片:</label>
-								<?php if(isset($case)){ ?>
-									<img id="imgDiv" style="width:255px;height:165px;" src="<?php echo $case['cs_image'];?>" />
-								<?php }else{ ?>
-        								<div id="imgDiv">
-        								</div> <br />
-								<?php } ?>
-								</p>
-
-								<p id="image_upload">
-						<input type="text" name="cs_image" style="display:none;" id="cs_image" value="<?php echo $case["cs_image"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
-
-						<input type="text" name="cs_image_old" style="display:none;" id="cs_image" value="<?php echo $case["cs_image"];?>" />						
-						<a class="button" id="buttonSelect" onclick="image.click()">选择图片</a>
-						<a class="button" id="buttonUpload" onclick="return ajaxFileUpload();" style="display:none;">上传图片</a>						<br /><!--small></small-->
+								<div id="uploadImg">
+									<table align="left" style="border:1px solid #CCCCCC">
+										<thead>
+											<tr>
+												<th style="width:50px">封面</th>
+												<th style="width:100px">预览</th>
+												<th style="width:200px">文件</th>
+												<th style="width:100px">图片描述</th>
+												<th style="width:100px">操作</th>
+												<th style="width:200px"></th>
+											</tr>
+										</thead>
+										<tbody id="div_Pic">
+							<?php $i=0;foreach($case_images as $key=>$value){?>
+								<tr id="PicFile<?php echo $i;?>">
+									<input id="img_id<?php echo $i;?>" name="img_id[<?php echo $i;?>]" style="display: none;" value="<?php echo $value['img_id'];?>" />
+									<td><input name="cover_img" type="radio" value="<?php echo $i;?>" <?php if($value["img_id"]==$case["cs_cover"]){echo "checked";}?> /></td>
+									<td><img id="img<?php echo $i;?>" width="100" <?php if($value['img_src']){echo 'src="'.$value['img_src'].'"';}?> /></td>
+									<td><input id="PicFile" type="file" name="picFile[<?php echo $i;?>]" onchange="clearId('img_id<?php echo $i;?>');PreviewImage(this,'img<?php echo $i;?>','divNewPreview');" /></td>
+									<td><input type="text" name="picDescribe[<?php echo $i;?>]" value="<?php echo $value['img_des'];?>"></td>
+									<td>
+							<?php if($i>0){ ?>
+									<input type="button" value="删除" onclick="removeInput('div_Pic','PicFile<?php echo $i;?>')" />
+							<?php } ?>
+									</td>
+									<td><div id="errorDiv<?php echo $i;?>"></div></td>
+								</tr>
+							<?php $i++;} ?>
+										</tbody>
+									</table>
+									<input class="button" type="button" onClick="createInput('div_Pic','PicFile')" name="button" id="button" value="+ 继续添加图片">
+								</div>
 								</p>
 
 								<p>
 									<label>案例链接:</label>
-										<input class="text-input small-input" type="text" name="cs_url" value="<?php echo $case["cs_url"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+										<input class="text-input small-input required" type="text" name="cs_url" value="<?php echo $case["cs_url"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small></small-->
 								</p>
 
 								<p>
 									<label>案例排序:</label>
-										<input class="text-input small-input" type="text" name="cs_sort" value="<?php echo $case["cs_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+										<input class="text-input small-input required" type="text" name="cs_sort" value="<?php echo $case["cs_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small>右侧导航显示顺序</small-->
 								</p>
 								
@@ -211,12 +294,11 @@
 							<div class="clear"></div><!-- End .clear -->
 							
 						</form>
-						<input type="file" name="image" style="display:none;" id="image" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 						
 					</div> <!-- End #tab2 -->        
 					
 				</div> <!-- End .content-box-content -->
 				
 			</div> <!-- End .content-box -->
-			
+			<iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
 			<div class="clear"></div>

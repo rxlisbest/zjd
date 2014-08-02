@@ -7,17 +7,11 @@ use Think\Controller;
 use home\Common\HomeController;
 class ContactController extends HomeController {
 	public function index(){
-		$FriendModel = D("Friend");
-		$Friends = $FriendModel->order('f_sort DESC')->select();
-		$this->assign('Friends',$Friends);
 		$ContactModel = D("Contact");
-		$Contact = $ContactModel->where('con_istop = 1')->find();
-		$Contacts = $ContactModel->order('con_istop DESC,con_sort ASC')->select();
-		$this->assign('Contact',$Contact);
-		$this->assign('Contacts',$Contacts);
+		$Contact = $ContactModel->where('con_id = 1')->find();
+		$this->assign('contact',$Contact);
+		$this->assign('cur', 6); //当前高亮导航
 
-		$title = "联系我们";
-		$this->assign('title',$title);
 		$this->display("contact");
 	}
 }

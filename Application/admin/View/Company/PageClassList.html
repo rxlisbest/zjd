@@ -1,0 +1,77 @@
+<!-- Page Head -->
+<h2>文章分类管理</h2>
+<p id="page-intro">添加、删除和修改文章分类。</p>
+	
+<div class="clear"></div> <!-- End .clear -->
+<div class="content-box">
+    <!-- Start Content Box -->
+    <div class="content-box-header">
+        <h3 style="cursor: s-resize;">文章分类</h3>
+        <ul class="content-box-tabs">
+            <li><a href="#" title="Add" onclick="show_frame('{$PageClassAddUrl}')">添加</a></li>
+        </ul>
+        <div class="clear">
+        </div>
+    </div>
+    <!-- End .content-box-header -->
+    <div class="content-box-content">
+        <div class="tab-content default-tab">
+	<form method="post" action="<?php echo $batchUrl;?>" onsubmit="return form_post(this)" >	
+            <table>
+                <thead>
+                    <tr>
+                       <th><input class="check-all" type="checkbox" /></th>
+                       <th>标题</th>
+                       <th>排序</th>
+                       <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <foreach name="PageClassLists" item="PageClassList">
+                        <tr>
+                            <td><input type="checkbox" name="{$PageClassList.pc_id}" /></td>
+                            <td>{$PageClassList.pc_title}</td>
+                            <td>{$PageClassList.pc_sort}</td>
+                            <td>
+                                <!-- Icons -->
+                                <a href="#" title="Edit" onclick="show_frame('{$PageClassEditUrl}/id/{$PageClassList.pc_id}')"><img src="/Public/resources/images/icons/pencil.png" alt="Edit" /></a>
+                                <a href="#" title="Delete" onclick="url_post('{$PageClassDelUrl}/id/{$PageClassList.pc_id}')"><img src="/Public/resources/images/icons/cross.png" alt="Delete" /></a> 
+                                <a href="#" title="Edit Meta"><img src="/Public/resources/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a>
+                            </td>
+                        </tr>
+                    </foreach>
+		    <?php for($i=0;$i<$blank;$i++){ ?>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+				<div style="height:20px;width:20px;"></div>
+                            </td>
+                        </tr>
+		    <?php } ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="6">
+			<div class="bulk-actions align-left">
+				<select name="choose">
+					<option value="select">选择...</option>
+					<option value="delete">删除</option>
+				</select>
+				<input type="submit" class="button" value="提交选择" />
+			</div>
+                        <div class="pagination">
+				<?php echo $pagination;?>	
+                        </div>
+                        <!-- End .pagination -->
+                        <div class="clear">
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+	</form>
+        </div>
+    </div>
+</div>

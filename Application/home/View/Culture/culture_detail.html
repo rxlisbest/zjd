@@ -1,0 +1,39 @@
+<extend name="./Public/home/home.html" />
+<block name="title">
+	<title>{$page.p_title}-杭州周姜达文化创意有限公司</title>
+</block>
+<block name="main">
+	<title>案例分类展示-杭州周姜达文化创意有限公司</title>
+        <div class="c_culture_detail">
+            <div class="c_culture_detail_container">
+                <div class="cont_header">
+                    <h1>
+			{$page.p_title}
+                    </h1>
+                    <p class="time">
+                        发布于 {$page.p_date|date="Y-m-d",###}
+                    </p>
+                    <div class="right_txt">
+                        <img src="/Public/home/images/back.png">
+                        <a href="/culture">返回列表</a>
+                    </div>
+                    <hr>
+                </div>
+                <div class="c_culture_detail_cont">
+			{$page.p_content}
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript" src="/Public/home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/Public/home/js/jquery.nicescroll.js"></script>
+    <script type="text/javascript">
+        $(".c_culture_detail_cont").niceScroll({
+            cursorcolor:"#00fcff",
+            cursoropacitymax:1,
+            touchbehavior:false,
+            cursorwidth:"5px",
+            cursorborder:"0",
+            cursorborderradius:"5px"
+        });
+    </script>
+</block>
