@@ -13,6 +13,7 @@
                     <div id="picBox" class="picBox">
                         <ul class="cf">
 				<foreach name="images" item="v" >
+				<if condition="$v['img_id'] neq $case['cs_cover']" >
 				    <li>
 					<a target="_blank">
 					    <img width="680" height="380" src="{$v.img_src}" alt="" />
@@ -23,6 +24,7 @@
 					    </p>
 					</div>
 				    </li>
+				</if>
 				</foreach>
                         </ul>
                     </div>
@@ -43,6 +45,7 @@
                         <ul class="cf">
 				<?php $i=0;?>
 				<foreach name="images" item="v" >
+				<if condition="$v['img_id'] neq $case['cs_cover']" >
 				    <li <?php if(!$i){echo 'class="on"';}?>>
 					<if condition="$i=0">
 					<i class="arr2"></i>
@@ -50,6 +53,7 @@
 					<img width="118" height="64" src="{$v.img_src}" />
 				    </li>
 				<?php $i++;?>
+				</if>
 				</foreach>
                         </ul>
                     </div>

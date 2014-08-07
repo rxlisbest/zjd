@@ -52,9 +52,8 @@ function createInput(parentID,inputFileID){
 	pImg.id="img"+x.toString();
 	pImg.width=100;
 	
-	var pDescribe=document.createElement("input"); //创建input
+	var pDescribe=document.createElement("textarea"); //创建input
 	pDescribe.name="picDescribe["+x.toString()+"]";
-	pDescribe.type="text";
 
 	var aElement=document.createElement("input"); //创建input
 	aElement.name="picFile["+x.toString()+"]";
@@ -223,13 +222,13 @@ function changeImg(){
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								<input name="cs_id" style="display:none;" value="<?php echo $case["cs_id"];?>" />
 								<p>
-									<label>案例名称:</label>
+									<label>作品名称:</label>
 										<input class="text-input small-input required" type="text" name="cs_title" value="<?php echo $case["cs_title"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small></small-->
 								</p>
 
 								<p>
-									<label>案例分类:</label>              
+									<label>作品分类:</label>              
 									<select name="c_id" class="small-input">
 									<?php foreach($caseclass as $key=>$value){?>
 										<option value="<?php echo $key;?>" <?php if($key==$case["c_id"]){echo "selected";} ?> ><?php echo $value;?></option>
@@ -238,15 +237,15 @@ function changeImg(){
 								</p>
 
 								<p>
-									<label>案例图片:</label>
+									<label>作品图片:</label>
 								<div id="uploadImg">
 									<table align="left" style="border:1px solid #CCCCCC">
 										<thead>
 											<tr>
 												<th style="width:50px">封面</th>
 												<th style="width:100px">预览</th>
-												<th style="width:200px">文件</th>
-												<th style="width:100px">图片描述</th>
+												<th style="width:100px">文件</th>
+												<th style="width:200px">图片描述</th>
 												<th style="width:100px">操作</th>
 												<th style="width:200px"></th>
 											</tr>
@@ -258,7 +257,7 @@ function changeImg(){
 									<td><input name="cover_img" type="radio" value="<?php echo $i;?>" <?php if($value["img_id"]==$case["cs_cover"]){echo "checked";}?> /></td>
 									<td><img id="img<?php echo $i;?>" width="100" <?php if($value['img_src']){echo 'src="'.$value['img_src'].'"';}?> /></td>
 									<td><input id="PicFile" type="file" name="picFile[<?php echo $i;?>]" onchange="clearId('img_id<?php echo $i;?>');PreviewImage(this,'img<?php echo $i;?>','divNewPreview');" /></td>
-									<td><input type="text" name="picDescribe[<?php echo $i;?>]" value="<?php echo $value['img_des'];?>"></td>
+									<td><textarea type="text" name="picDescribe[<?php echo $i;?>]" value="<?php echo $value['img_des'];?>"></textarea></td>
 									<td>
 							<?php if($i>0){ ?>
 									<input type="button" value="删除" onclick="removeInput('div_Pic','PicFile<?php echo $i;?>')" />
@@ -273,14 +272,14 @@ function changeImg(){
 								</div>
 								</p>
 
-								<p>
+								<!--p>
 									<label>案例链接:</label>
-										<input class="text-input small-input required" type="text" name="cs_url" value="<?php echo $case["cs_url"];?>"/> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
-										<br /><!--small></small-->
-								</p>
+										<input class="text-input small-input required" type="text" name="cs_url" value="<?php echo $case["cs_url"];?>"/> 
+										<br />
+								</p-->
 
 								<p>
-									<label>案例排序:</label>
+									<label>作品排序:</label>
 										<input class="text-input small-input required" type="text" name="cs_sort" value="<?php echo $case["cs_sort"];?>" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
 										<br /><!--small>右侧导航显示顺序</small-->
 								</p>

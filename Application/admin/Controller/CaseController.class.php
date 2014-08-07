@@ -218,7 +218,7 @@ class CaseController extends YuController {
 					$error[$key] = "图片类型不正确!";
 					continue;
 				}
-				if($_FILES["picFile"]["size"][$key] > 100000){
+				if($_FILES["picFile"]["size"][$key] > 500000){
 					$error[$key] = "图片太大!";
 					continue;
 				}

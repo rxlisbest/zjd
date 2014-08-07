@@ -11,7 +11,7 @@
 			{$page.p_title}
                     </h1>
                     <p class="time">
-                        发布于 {$page.p_date|date="Y-m-d",###}
+                        发布于 {$page.p_date|strtotime|date="Y-m-d",###}
                     </p>
                     <div class="right_txt">
                         <img src="/Public/home/images/back.png">

@@ -1,0 +1,138 @@
+	<script type="text/javascript">
+	function ajaxFileUpload()
+	{
+		$.ajaxFileUpload
+		(
+			{
+				url:'/admin.php/admin/Designer/upload',
+				secureuri:false,
+				fileElementId:'image',
+				dataType: 'json',
+				data:{name:'logan', id:'id'},
+				success: function (data, status)
+				{
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != '')
+						{
+							alert(data.error);
+						}else
+						{
+							//alert(data.msg);
+							$("#buttonUpload").hide();
+							$("#buttonSelect").hide();
+							$("#image_upload").hide();
+							$("#d_img").attr("value",data.msg);
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					alert(e);
+				}
+			}
+		)
+		
+		return false;
+
+	}
+	</script>	
+<script type="text/javascript">
+        $(document).ready(function() {
+            //建议在#imgDiv的父元素上加个overflow:hidden;的css样式
+            $("#image").uploadPreview({ width: 255, height: 165, imgDiv: "#imgDiv", imgType: ["bmp", "gif", "png", "jpg"] });
+        });
+    </script> 
+<script type="text/javascript">
+$(function() {
+	var editor = KindEditor.create('textarea[name="d_intro"]',{
+		afterBlur: function () { this.sync(); }
+	});
+});
+KindEditor.ready(function(K){
+	window.editor = K.create('#editor_id');
+});
+
+</script>
+<div class="content-box">
+    <!-- Start Content Box -->
+    <div class="content-box-header">
+        <h3 style="cursor: s-resize;">设计师管理</h3>
+        <div class="clear">
+        </div>
+    </div>
+    <!-- End .content-box-header -->
+    <div class="content-box-content">
+        <div class="tab-content default-tab">
+            <form method="post" action="{$DesignerSaveUrl}" onsubmit="return form_post(this)" >	
+                <fieldset>
+                    <input type="hidden" name="d_id" value="{$DesignerInfo.d_id}" />
+                    <p>
+                        <label>姓名</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_name}" type="text" name="d_name" >
+                    </p>
+                    <p>
+                        <label>职业</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_profession}" type="text" name="d_profession" >
+                    </p>
+                    <p>
+                        <label>生日</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_birthday}" type="text" name="d_birthday" >
+                    </p>
+                    <p>
+                        <label>民族</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_nation}" type="text" name="d_nation" >
+                    </p>
+                    <p>
+                        <label>籍贯</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_hometown}" type="text" name="d_hometown" >
+                    </p>
+                    <p>
+                        <label>信仰</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_belief}" type="text" name="d_belief" >
+                    </p>
+                    <p>
+                        <label>国藉</label>
+                        <input class="text-input small-input required" value="{$DesignerInfo.d_country}" type="text" name="d_country" >
+                    </p>
+			<p>
+				<label>设计师照片:</label>
+				<?php if(isset($DesignerInfo)){ ?>
+				<img id="imgDiv" style="width:255px;height:165px;" src="{$DesignerInfo.d_img}" />
+				<?php }else{ ?>
+        			<div id="imgDiv">
+        			</div> <br />
+				<?php } ?>
+			</p>
+
+			<p id="image_upload">
+				<input type="text" name="d_img" style="display:none;" id="d_img" value="{$DesignerInfo.d_img}" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+
+				<input type="text" name="d_img_old" style="display:none;" id="d_img_old" value="{$DesignerInfo.d_img}" />						
+				<a class="button" id="buttonSelect" onclick="image.click()">选择图片</a>
+				<a class="button" id="buttonUpload" onclick="return ajaxFileUpload();" style="display:none;">上传图片</a>						<br /><!--small></small-->
+			</p>
+
+                    <p>
+                        <label>个人简介</label>
+                        <input class="text-input large-input required" value="{$DesignerInfo.d_brief}" type="text" name="d_brief" >
+                    </p>
+                    <p>
+                        <label>设计师介绍</label>
+			<textarea id="editor_id" name="d_intro" style="width:700px;height:300px;">{$DesignerInfo.d_intro}</textarea>
+                    </p>
+                    <p>
+                        <label>排序</label>
+                        <input class="text-input large-input required" value="{$DesignerInfo.d_sort}" type="text" name="d_sort" >
+                    </p>
+                    <p>
+                        <input class="button" type="submit" value="Submit">
+                    </p>
+                </fieldset>
+                <div class="clear">
+                </div>
+            </form>
+						<input type="file" name="image" style="display:none;" id="image" /> <!--span class="input-notification success png_bg">Successful message</span--> <!-- Classes for input-notification: success, error, information, attention -->
+        </div>
+    </div>
+</div>
